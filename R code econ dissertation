@@ -1,0 +1,66 @@
+install.packages("stargazer")
+install.packages("foreign")
+install.packages("dplyr")
+install.packages("coefplot")
+
+library(stargazer)
+library(dplyr)
+library(foreign)
+library(ggplot2)
+library(coefplot)
+
+mydata <- read.csv("C:/BScData.csv")
+
+mydata
+names(mydata)
+
+summary(mydata)
+stargazer(mydata)
+
+
+regression <- lm(data=mydata, GDP ~ FE.Wales + FE.Scotland + FE.North.East + FE.North.West + FE.Yorkshire...the.Humber + FE.London + FE.West.Midlands + FE.East.Midlands + FE.South.East + FE.South.West + FE.East.of.England + FE.Northern.Ireland)
+regression
+summary(regression)
+
+stargazer(regression)
+
+mydata2 <- mutate(mydata, lnGDP = log(GDP), lnFE.Wales = log(FE.Wales), lnFE.Scotland = log(FE.Scotland), lnFE.North.East = log(FE.North.East), lnFE.North.West = log(FE.North.West), lnFE.Yorkshire...the.Humber = log(FE.Yorkshire...the.Humber), lnFE.London = log(FE.London), lnFE.West.Midlands = log(FE.West.Midlands), lnFE.East.Midlands = log(FE.East.Midlands), lnFE.South.East = log(FE.South.East), lnFE.South.West = log(FE.South.West), lnFE.East.of.England = log(FE.East.of.England), lnFE.Northern.Ireland = log(FE.Northern.Ireland))        
+
+regression2<-lm(data=mydata2, lnGDP~lnFE.Wales + lnFE.Scotland + lnFE.North.East + lnFE.North.West + lnFE.Yorkshire...the.Humber + lnFE.London + lnFE.West.Midlands + lnFE.East.Midlands + lnFE.South.East + lnFE.South.West + lnFE.East.of.England + lnFE.Northern.Ireland)
+
+
+regression2
+summary(regression2)
+stargazer(regression2)
+
+coefplot(regression2)
+head(fortify(regression2))
+#.fitted and residuals needed from this above
+
+
+residualPlot<-ggplot(aes(x =.fitted,y=.resid),data=regression)+geom_point()+geom_hline(yintercept=0)+labs(x="Fitted Values",y="Residuals")+geom_point(color="#FF6699")
+residualPlot 
+
+predicted <- predict(regression)
+predicted 
+  
+mydata$residuals <- residuals(regression)
+
+predictedPlot<-ggplot(mydata, aes(x = FE.Wales, FE.Scotland, FE.North.East, FE.North.West, FE.Yorkshire...the.Humber, FE.London, FE.West.Midlands, FE.East.Midlands, FE.South.East, FE.South.West, FE.East.of.England, FE.Northern.Ireland, y = GDP))+geom_segment(aes(xend = ggplot(mydata, aes(x = FE.Wales + FE.Scotland + FE.North.East + FE.North.West + FE.Yorkshire...the.Humber + FE.London + FE.West.Midlands + FE.East.Midlands + FE.South.East + FE.South.West + FE.East.of.England + FE.Northern.Ireland, y = residuals))+geom_segment(aes(xend = FE.Wales + FE.Scotland + FE.North.East + FE.North.West + FE.Yorkshire...the.Humber + FE.London + FE.West.Midlands + FE.East.Midlands + FE.South.East + FE.South.West + FE.East.of.England + FE.Northern.Ireland, yend = predicted),alpha=.2)+geom_point(aes(color = residuals))+scale_color_gradient2(low = "#FFCC00", mid = "red", high = "#FF33FF")+guides(color = FALSE)+geom_point(aes(y = predicted),shape = 16)+theme_bw())
+predictedPlot
+
+####
+
+ggplot
+
+residualPlot<-ggplot(aes(x = FE.Wales + FE.Scotland + FE.North.East + FE.North.West + FE.Yorkshire...the.Humber + FE.London + FE.West.Midlands + FE.East.Midlands + FE.South.East + FE.South.West + FE.East.of.England + FE.Northern.Ireland,y=.resid),data=regression)+geom_point()+geom_hline(yintercept=0)+labs(x="Fitted Values",y="Residuals", tittle="Graph 3: Resiual plot for the multiple regression")+geom_point(color="#FF6699")
+
+
+mydata3<-subset(mydata[1:10,])
+#so give the first 10 observaions in the data set so the first 10 years of data because its in years.
+#mydata3 is not needed unless you use a big sample or throughout a long time, to pin point a certain decade
+#looking at 10 years of the data specifically
+
+regression3 <- lm(data = mydata3, Female.Homicides~Poverty)
+regression3
+summary(regression3)
