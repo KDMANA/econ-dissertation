@@ -1,6 +1,4 @@
-# econ-dissertation
-Economics dissertation project from BSc Economics degree using R programming language
-
+# United Kingdom: Exploring the Impact of Women's Employment Changes on Economic Growth Over the Past 28 Years
 
 # Abstract
 Since the 1990s, there has been a notable surge in initiatives aimed at addressing gender inequalities in the labour market. This project critically examines the impact of these reforms on the economic growth of the United Kingdom. The primary focus of the research is to discern the effects of female employment on the country's real GDP. Through rigorous statistical analysis, we observe a discernible negative correlation between female employment rates and real GDP. Moreover, our regression analysis highlights the presence of regional dependencies influencing national economic growth in the UK.
